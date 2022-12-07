@@ -15,21 +15,18 @@ class EmployeePayrollData {
     }
 
     set name(name) {
-        let nameRegex = RegExp('^[A-Z]{1}[a-z]{3,}$');
-        if (nameRegex.test(name)){
+        let nameRegex = RegExp("^[A-Z]{1}[a-zA-Z\\s]{2,}$");
+        if (nameRegex.test(name))
             this._name = name;
-        }
-        else{
-            return "**** NAME is Incorrect ****";
-        }
+        else return "Name is incorrect";
     }
 
-    get profileImage() {
-        return this._profileImage;
+    get profilePic() {
+        return this._profilePic;
     }
 
-    set profileImage(profileImage) {
-        this._profileImage = profileImage;
+    set profilePic(profilePic) {
+        this._profilePic = profilePic;
     }
 
     get gender() {
@@ -54,34 +51,36 @@ class EmployeePayrollData {
 
     set salary(salary) {
         this._salary = salary;
-
     }
 
-    get startDate() {
-        return this._startDate;
+    get note() {
+        return this._note;
     }
 
-    set startDate(startDate) {
-        let future = new Date();
-        future.setDate(future.getDate() + 30);
-        if (startDate < new Date() || startDate < future)
-            this._startDate = startDate;
-        else
-            return "**** START DATE is Incorrect ****";
+    set note(note) {
+        this._note = note;
     }
 
-    get notes() {
-        return this._notes;
+    get start_date() {
+        return this._start_date;
     }
 
-    set notes(notes) {
-        this._notes = notes;
+    set start_date(start_date) {
+        let now = new Date();
+        now = Date.parse(now);
+        if (start_date > now) {
+            return 'Start Date is Future date!';
+        } else {
+            this._start_date = start_date;
+        }
     }
 
     toString() {
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        const employeeDate = this.startDate == undefined ? "undefined" : this.startDate.toLocaleDateString("en-us", options);
-        return "Name = " + this.name + ", Profile Image = " + this.profileImage + ", Gender = " + this.gender + ", Department = " + this.department + ", Salary = " + this.salary + ", Start Date = " + employeeDate + ", Notes = " + this.notes;
+        const empDate = !this.start_date ? "undefined" :
+            this.start_date.toLocaleDateString("en-US", options);
+        return 'Name = ' + this.name + ", Gender = " + this.gender + ", ProfilePic = " + this.profilePic
+            + ", Department = " + this.department + ", Salary = " + this.salary +
+            ", StartDate = " + empDate + ", Note = " + this.note;
     }
-    
 }
